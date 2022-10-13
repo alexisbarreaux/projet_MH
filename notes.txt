@@ -1,0 +1,18 @@
+############################################
+#### 13/10
+############################################
+- implémentation lecture d'instance.
+- choix basique de la matrice d'adjacence pour représenter le graphe.
+- validité vérifiée par le print du nombre d'edges versus la somme des 1 de la matrice
+- average time of 0.0215 on 300 loads of brock200_2.col
+- tests on scipy sparse matrix structures:
+    The size of the sparse structure CSR seems interesting as compared to base adjacency matrix on bigger
+    graphs (the size of CSR being discussed as the size of the class as well as the three main sub_arrays indices, indptr and
+    data that are underlying) :
+    Nom du graphe  Taille de CSR  Taille de adjacency
+    brock200_2.col 1188 40128
+    dsjc125.1.col 888 15753
+    random-10.col 428 228
+    random-100.col 788 10128
+    random-40.col 548 1728
+    random-70.col 668 5028
