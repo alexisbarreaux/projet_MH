@@ -22,6 +22,21 @@ def read_instance_edge_line(instance_file: TextIO) -> Tuple[int, int]:
     return int(line_splitted[1]) - 1, int(line_splitted[2]) - 1
 
 
+def initialize_degrees(number_of_nodes: int) -> np.ndarray:
+    """
+    Initialize a 0 array for the degrees of the nodes.
+    """
+    return np.zeros(number_of_nodes, dtype=np.int8)
+
+
+def update_degrees_with_edge(
+    first_edge_node: int, second_edge_node: int, degrees: np.ndarray
+) -> None:
+    degrees[first_edge_node] += 1
+    degrees[second_edge_node] += 1
+    return
+
+
 def initialize_adjacency_matrix(number_of_nodes: int) -> np.ndarray:
     # Int 8 gives a smaller memory usage than the base use of int64
     return np.zeros((number_of_nodes, number_of_nodes), dtype=np.int8)
@@ -36,22 +51,28 @@ def update_adjacency_matrix_with_edge(
 
 def read_single_problem_from_file_as_adjacency(
     instance_file: TextIO,
-) -> Tuple[int, int, np.ndarray]:
+) -> Tuple[int, int, np.ndarray, np.ndarray]:
     """
     Used to read a file containing a unique problem.
 
-    Stores the result as an adjacency matrix
+    Returns:
+        number of nodes
+        number of edges
+        graph as adjacency matrix
+        degrees as an array
     """
     number_of_nodes, number_of_edges = read_instance_first_line(instance_file)
     adjacency_matrix = initialize_adjacency_matrix(number_of_nodes)
+    degrees = initialize_degrees(number_of_nodes)
 
     for _ in range(number_of_edges):
         first_edge_node, second_edge_node = read_instance_edge_line(instance_file)
         update_adjacency_matrix_with_edge(
             first_edge_node, second_edge_node, adjacency_matrix
         )
+        update_degrees_with_edge(first_edge_node, second_edge_node, degrees)
 
-    return number_of_nodes, number_of_edges, adjacency_matrix
+    return number_of_nodes, number_of_edges, adjacency_matrix, degrees
 
 
 def read_single_problem_from_path_as_adjacency(
@@ -100,18 +121,24 @@ def update_sparse_with_edge(
 
 def read_single_problem_from_file_as_sparse(
     instance_file: TextIO,
-) -> Tuple[int, int, np.ndarray]:
+) -> Tuple[int, int, csr_array, np.ndarray]:
     """
     Used to read a file containing a unique problem.
 
-    Stores the result as a scipy csr sparse array.
+    Returns:
+        number of nodes
+        number of edges
+        graph as sparse csr array
+        degrees as an array
     """
     number_of_nodes, number_of_edges = read_instance_first_line(instance_file)
     indptr, indices, data = initialize_sparse_array(number_of_nodes, number_of_edges)
+    degrees = initialize_degrees(number_of_nodes)
 
     for _ in range(number_of_edges):
         first_edge_node, second_edge_node = read_instance_edge_line(instance_file)
         update_sparse_with_edge(first_edge_node, second_edge_node, indptr, indices)
+        update_degrees_with_edge(first_edge_node, second_edge_node, degrees)
 
     return (
         number_of_nodes,
@@ -119,6 +146,7 @@ def read_single_problem_from_file_as_sparse(
         csr_array(
             (data, np.array(indices), indptr), shape=(number_of_nodes, number_of_nodes)
         ),
+        degrees,
     )
 
 
@@ -147,5 +175,6 @@ def read_single_problem_from_path_as_sparse_from_adjacency(
         number_of_nodes,
         number_of_edges,
         adjacency_matrix,
+        degrees,
     ) = read_single_problem_from_path_as_adjacency(instance_path)
-    return number_of_nodes, number_of_edges, csr_array(adjacency_matrix)
+    return number_of_nodes, number_of_edges, csr_array(adjacency_matrix), degrees

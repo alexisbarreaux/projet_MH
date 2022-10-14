@@ -28,3 +28,10 @@
 - building neighbourhoods is doable, but will eventually explode in terms
 of complexity
 - for n=200, building V_3 already takes 5E-2s, for 19900 neighbours
+Possibles heuristics:
+    - choose starting nodes (biggest degrees ?) and grow from it a maximal clique (not maximum) -> linear
+    - il y a des algos en m^(3/2) pour les triangles
+    - https://en.wikipedia.org/wiki/Clique_problem#Finding_a_single_maximal_clique : trouver un unique triangle ou pas d'existence
+    peut se faire en encore mieux
+Idée d'heuristique perso : ranger les sommets par deg décroissant et tenter de construire un stable.
+- ajout calcul du degré dans la construction des données
