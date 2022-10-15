@@ -45,3 +45,4 @@ Possibles heuristics:
     of elements in the clique, no more node can be added. Very slight time gain.
 - Done a dynamic version of basic heuristic, strangely it is faster and less
  efficient ??
+ - added randomized versions where at each step we take one of the k possible candidates. For now k is arbitrarely set at deg_max // 2
