@@ -13,3 +13,12 @@ def get_degrees_in_adjacency(graph: np.ndarray) -> np.ndarray:
     O(n**2)
     """
     return np.sum(graph, axis=1)
+
+
+def delete_node_from_graph(graph: np.ndarray, node: int) -> None:
+    """
+    Delete all edges from or to a node.
+    """
+    graph[node] = np.zeros(len(graph))
+    graph[:, node] = np.zeros(len(graph))
+    return
