@@ -1,11 +1,16 @@
 # The idea is to build a clique by using the nodes with the biggest degrees first.
 # However, to make it more random, we take the size_of_choice nodes with the biggest degree (if possible)
 # each time and take one randomly.
+# Cliques are built as the list of nodes first, before being transformed to a 0-1 array
 from random import randint
 
 import numpy as np
 
-from utils import order_nodes_in_descending_order, check_if_edge_exists_in_adjacency
+from utils import (
+    order_nodes_in_descending_order,
+    check_if_edge_exists_in_adjacency,
+    transform_node_clique_to_zero_one,
+)
 
 
 def descending_degree_random_heuristic(
@@ -39,7 +44,7 @@ def descending_degree_random_heuristic(
         # are ordered once one node has a degree which is too small, all the
         # next ones too
         if degrees[candidate_node] < len(clique):
-            return clique
+            return transform_node_clique_to_zero_one(len(graph), clique)
         elif np.all(
             [
                 check_if_edge_exists_in_adjacency(
@@ -52,7 +57,7 @@ def descending_degree_random_heuristic(
 
         # Naturally let the loop continue as we have remove one node from the candidates.
 
-    return clique
+    return transform_node_clique_to_zero_one(len(graph), clique)
 
 
 def multiple_descending_degree_random_heuristic(
@@ -67,13 +72,13 @@ def multiple_descending_degree_random_heuristic(
     occurence.
     """
     # Store the best found result as well as possible other bests
-    best_clique = []
-    size_best_clique = len(best_clique)
+    best_clique = None
+    size_best_clique = 0
     all_best_found_cliques = set()
 
     for _ in range(number_of_iterations):
         clique = descending_degree_random_heuristic(graph, degrees, size_of_choice)
-        size_clique = len(clique)
+        size_clique = np.sum(clique)
         if size_clique > size_best_clique:
             best_clique = clique
             all_best_found_cliques = set()

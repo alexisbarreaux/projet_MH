@@ -1,5 +1,6 @@
 # The idea is to build a clique by using the nodes with the biggest degrees first.
 # This is fully deterministic.
+# Cliques are built as the list of nodes first, before being transformed to a 0-1 array
 from typing import Tuple
 
 import numpy as np
@@ -9,6 +10,7 @@ from utils import (
     check_if_edge_exists_in_adjacency,
     delete_node_from_graph,
     get_degrees_in_adjacency,
+    transform_node_clique_to_zero_one,
 )
 
 
@@ -34,7 +36,7 @@ def descending_degree_glutonous_heuristic(
         # are ordered once one node has a degree which is too small, all the
         # next ones too
         if degrees[candidate_node] < len(clique):
-            return clique
+            return transform_node_clique_to_zero_one(len(graph), clique)
         elif np.all(
             [
                 check_if_edge_exists_in_adjacency(
@@ -47,7 +49,7 @@ def descending_degree_glutonous_heuristic(
         else:
             continue
 
-    return clique
+    return transform_node_clique_to_zero_one(len(graph), clique)
 
 
 def update_residual_graph_and_reorder_nodes(
@@ -110,4 +112,4 @@ def dynamic_descending_degree_glutonous_heuristic(
                     # Break to restart loop on valid candidates order
                     break
 
-    return clique
+    return transform_node_clique_to_zero_one(len(graph), clique)
