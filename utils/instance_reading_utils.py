@@ -1,4 +1,4 @@
-from typing import Tuple, List, TextIO
+from typing import Tuple, TextIO
 
 import numpy as np
 from scipy.sparse import csr_array
@@ -46,6 +46,7 @@ def update_adjacency_matrix_with_edge(
     first_edge_node: int, second_edge_node: int, adjacency_matrix: np.ndarray
 ) -> None:
     adjacency_matrix[first_edge_node][second_edge_node] = np.int8(1)
+    adjacency_matrix[second_edge_node][first_edge_node] = np.int8(1)
     return
 
 
