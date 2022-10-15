@@ -33,5 +33,10 @@ Possibles heuristics:
     - il y a des algos en m^(3/2) pour les triangles
     - https://en.wikipedia.org/wiki/Clique_problem#Finding_a_single_maximal_clique : trouver un unique triangle ou pas d'existence
     peut se faire en encore mieux
-Idée d'heuristique perso : ranger les sommets par deg décroissant et tenter de construire un stable.
 - ajout calcul du degré dans la construction des données
+- Idée d'heuristique perso : ranger les sommets par deg décroissant et tenter de construire une clique comme ça.
+
+############################################
+#### 15/10
+############################################
+- What we are looking for is a sub matrix with only ones except for the diagonal that is made of 0
