@@ -46,3 +46,4 @@ Possibles heuristics:
 - Done a dynamic version of basic heuristic, strangely it is faster and less
  efficient ??
  - added randomized versions where at each step we take one of the k possible candidates. For now k is arbitrarely set at deg_max // 2
+ What value of k should be taken ?
