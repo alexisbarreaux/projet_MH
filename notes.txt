@@ -41,3 +41,7 @@ Possibles heuristics:
 ############################################
 - What we are looking for is a sub matrix with only ones except for the diagonal that is made of 0, is it usable ?
 - Done with most basic heuristic
+    Amelioration : If at some point the remaining degrees are less than the number
+    of elements in the clique, no more node can be added. Very slight time gain.
+- Done a dynamic version of basic heuristic, strangely it is faster and less
+ efficient ??
