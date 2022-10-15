@@ -19,7 +19,7 @@ def descending_degree_glutonous_heuristic(
     ordered_nodes = order_nodes_in_descending_order(degrees=degrees)
 
     # Start clique with node of biggest degree
-    clique: list = [ordered_nodes[1]]
+    clique: list = [ordered_nodes[0]]
     # Possible candidates are all other nodes
     candidates = ordered_nodes[1:]
     for candidate_node in candidates:
