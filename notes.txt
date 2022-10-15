@@ -39,4 +39,5 @@ Possibles heuristics:
 ############################################
 #### 15/10
 ############################################
-- What we are looking for is a sub matrix with only ones except for the diagonal that is made of 0
+- What we are looking for is a sub matrix with only ones except for the diagonal that is made of 0, is it usable ?
+- Done with most basic heuristic
