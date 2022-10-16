@@ -2,3 +2,4 @@ Requirements :
 
 - Having the solver CPLEX ILOG installed on your machine
 - Install the docplex package in your python environment : pip install docplex
+- Use python 3.8 or 3.7

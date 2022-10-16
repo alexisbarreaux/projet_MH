@@ -9,7 +9,7 @@ def LP(graph: np.ndarray):
 
     x_list = [
         model.continuous_var(name="x_" + i, lb=0, ub=1) for i in range(n)
-    ]  # Creating the variable x_i for each i in V
+    ]  # Creating the variable x_i for each vertex i in the graph
 
     for i in range(n):  # Adding the constraints of the problem
         for j in range(i):
