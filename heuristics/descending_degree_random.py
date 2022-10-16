@@ -26,7 +26,7 @@ def descending_degree_random_heuristic(
     """
     # Define the number of nodes from which to choose randomly at each step
     if size_of_choice is None:
-        size_of_choice = np.max(degrees) // 2
+        size_of_choice = min(np.max(degrees) // 2, 10)
 
     ordered_nodes = order_nodes_in_descending_order(degrees=degrees)
     candidates = list(ordered_nodes)
