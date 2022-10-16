@@ -8,7 +8,7 @@ def MIP(graph: np.ndarray):
     n = len(graph)
 
     x_list = [
-        model.binary_var(name="x_" + i) for i in range(n)
+        model.binary_var(name=f"x_{i}") for i in range(n)
     ]  # Creating the variable x_i for each vertex i in the graph
 
     for i in range(n):  # Adding the constraints of the problem
