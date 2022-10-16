@@ -8,7 +8,7 @@ def LP(graph: np.ndarray):
     n = len(graph)
 
     x_list = [
-        model.continuous_var(name="x_" + i, lb=0, ub=1) for i in range(n)
+        model.continuous_var(name=f"x_{i}", lb=0, ub=1) for i in range(n)
     ]  # Creating the variable x_i for each i in V
 
     for i in range(n):  # Adding the constraints of the problem
