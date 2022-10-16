@@ -52,4 +52,5 @@ Possibles heuristics:
 #### 16/10
 ############################################
 - Found interesting paper : https://www.researchgate.net/publication/341273157_Randomized_heuristic_for_the_maximum_clique_problem
-The idea of descending degrees seems to be valid.
+The idea of descending degrees seems to be valid and can be worked on.
+- On other instances, we see that, quite naturally, adding some randomness can yield better solutions, but of course not always.
