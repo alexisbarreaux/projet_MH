@@ -26,7 +26,7 @@ def initialize_degrees(number_of_nodes: int) -> np.ndarray:
     """
     Initialize a 0 array for the degrees of the nodes.
     """
-    return np.zeros(number_of_nodes, dtype=np.int8)
+    return np.zeros(number_of_nodes)
 
 
 def update_degrees_with_edge(
