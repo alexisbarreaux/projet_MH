@@ -3,99 +3,94 @@ from pathlib import Path
 
 from time import time
 import pandas as pd
+import numpy as np
+
+from utils import (
+    read_single_problem_from_path_as_adjacency,
+    check_validity_for_adjacency,
+)
 
 
 class HeuristicRunner:
     # Setup variables
-    files_dir: Path = None
-    files: list[str] = None
+    instances_dir: Path = None
+    instances: list[str] = None
     methods: list[Tuple[Callable, str]] = None
+    known_bests: dict = None
     # Runtime variables
     instance_reading_times = None
     clique_creating_times = None
     total_times = None
     clique_sizes = None
+    display_time_details = None
     # Display variables
     display_dataframe = None
 
     def __init__(
         self,
-        files_dir: Path,
-        files: list[str],
+        instances_dir: Path,
+        instances: list[str],
         methods: list[Tuple[Callable, str]],
-        **kwargs
+        known_bests: dict,
+        display_time_details: bool = False,
     ) -> None:
-        self.files_dir = files_dir
-        self.files = files
+        self.instances_dir = instances_dir
+        self.instances = instances
         self.methods = methods
-
-        for argument in kwargs:
-            setattr(self, argument, kwargs[argument])
+        self.known_bests = known_bests
+        self.display_time_details = display_time_details
 
         # Initialize display dataframe
-        columns = ["file", "method", "clique", "best", "total(s)"]
-        for optional_attribute in ["load(s)", "clique(s)"]:
-            if getattr(kwargs, optional_attribute, False):
-                columns.append(optional_attribute)
-            else:
-                continue
+        columns = ["instance", "method", "clique", "best", "total(s)"]
+        if display_time_details:
+            columns += ["load(s)", "clique(s)"]
 
         self.display_dataframe = pd.DataFrame({column: [] for column in columns})
         return
 
-    def run_method_on_all_files(self, method: Callable, method_name: str) -> None:
-        for file in self.files:
-            method(file)
-        return
+    def run_all_methods_on_instance(self, instance: str) -> None:
+        for method, method_name in self.methods:
+            # Loading
+            start_time = time()
+            _, _, graph, degrees = read_single_problem_from_path_as_adjacency(
+                instance_path=self.instances_dir / instance
+            )
+            end_of_read_time = time()
+            instance_reading_time = end_of_read_time - start_time
 
-    def run_all_methods_on_files(self) -> None:
-        for (method, method_name) in self.methods:
-            self.run_method_on_all_files(method=method, method_name=method_name)
-        return
+            # Clique building
+            clique = method(graph=graph, degrees=degrees)
+            clique_size = np.sum(clique)
+            end_of_clique_time = time()
+            clique_creating_time = end_of_clique_time - end_of_read_time
 
+            assert check_validity_for_adjacency(graph, clique)
+            total_time = time() - start_time
 
-"""
+            # Adding to display
+            new_row = [
+                instance,
+                method_name,
+                clique_size,
+                self.known_bests.get(instance, "//"),
+                total_time,
+            ]
+            if self.display_time_details:
+                new_row += [instance_reading_time, clique_creating_time]
 
-for file in BASE_INSTANCES_FILES:
-        # File loading
-        start_time = time()
-        _, _, graph, degrees = read_single_problem_from_path_as_adjacency(
-            instance_path=BASE_INSTANCES_DIR / file
+            self.display_dataframe.loc[len(self.display_dataframe)] = new_row
+
+        # At the end of file, add separator line
+        self.display_dataframe.loc[len(self.display_dataframe)] = ["///"] * len(
+            self.display_dataframe.columns
         )
-        end_of_read_time = time()
-        instance_reading_times.append(end_of_read_time - start_time)
+        return
 
-        # Clique building
-        clique = method(graph=graph, degrees=degrees)
-        clique_sizes.append(np.sum(clique))
-        end_of_clique_time = time()
-        clique_creating_times.append(end_of_clique_time - end_of_read_time)
+    def run_all_methods_on_all_instances(self) -> None:
+        for instance in self.instances:
+            self.run_all_methods_on_instance(instance=instance)
+        return
 
-        assert check_validity_for_adjacency(graph, clique)
-        total_times.append(time() - start_time)
-
-    # At the end of each method, add visual separator
-    for display_list in [
-        files,
-        instance_reading_times,
-        clique_creating_times,
-        total_times,
-        clique_sizes,
-        methods,
-    ]:
-        display_list.append("/////")
-
-# Display for most basic heuristics
-
-display_dataframe = pd.DataFrame(
-    {
-        "file": files,
-        "method": methods,
-        "clique size": clique_sizes,
-        "instance time": instance_reading_times,
-        "clique time": clique_creating_times,
-        "total time": total_times,
-    }
-)
-print(display_dataframe)
-"""
+    def display_results(self) -> None:
+        print(self.display_dataframe)
+        return
