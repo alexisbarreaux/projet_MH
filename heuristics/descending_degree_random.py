@@ -24,7 +24,6 @@ def descending_degree_random_heuristic(
     O(n**2) because we need to check for each node except the first if the possibly all
     previous nodes are neighbours, each of which is done in O(1).
     """
-    print("size_of_choice", size_of_choice)
     ordered_nodes = order_nodes_in_descending_order(degrees=degrees)
     candidates = list(ordered_nodes)
     clique = []
