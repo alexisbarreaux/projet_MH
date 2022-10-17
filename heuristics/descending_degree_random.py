@@ -14,7 +14,7 @@ from utils import (
 
 
 def descending_degree_random_heuristic(
-    graph: np.ndarray, degrees: np.ndarray, size_of_choice: int = None
+    graph: np.ndarray, degrees: np.ndarray, size_of_choice: int = 5
 ) -> list:
     """
     Start by reordering the nodes by degrees.
@@ -24,10 +24,7 @@ def descending_degree_random_heuristic(
     O(n**2) because we need to check for each node except the first if the possibly all
     previous nodes are neighbours, each of which is done in O(1).
     """
-    # Define the number of nodes from which to choose randomly at each step
-    if size_of_choice is None:
-        size_of_choice = min(np.max(degrees) // 2, 10)
-
+    print("size_of_choice", size_of_choice)
     ordered_nodes = order_nodes_in_descending_order(degrees=degrees)
     candidates = list(ordered_nodes)
     clique = []
@@ -63,8 +60,8 @@ def descending_degree_random_heuristic(
 def multiple_descending_degree_random_heuristic(
     graph: np.ndarray,
     degrees: np.ndarray,
-    size_of_choice: int = None,
-    number_of_iterations: int = 100,
+    size_of_choice: int = 5,
+    number_of_iterations: int = 10,
     return_all_best: bool = False,
 ) -> list:
     """
