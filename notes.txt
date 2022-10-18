@@ -66,3 +66,5 @@ The idea of descending degrees seems to be valid and can be worked on.
 - the problem we have here is that our neighbours will have either
 0 or 1 as a delta for the objective, which makes it hard to discriminate
 between them.
+- première méta : faire un vns de base où on retire k noeuds de la clique et on refait une descente à partir de là.
+- voisinage V_i(x) = retirer i noeuds de la clique x
