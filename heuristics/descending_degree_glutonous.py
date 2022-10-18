@@ -7,6 +7,7 @@ import numpy as np
 
 from utils import (
     order_nodes_in_descending_order,
+    order_subset_of_nodes_in_descending_order,
     check_if_edge_exists_in_adjacency,
     delete_node_from_graph,
     get_degrees_in_adjacency,
@@ -50,6 +51,46 @@ def descending_degree_glutonous_heuristic(
             continue
 
     return transform_node_clique_to_zero_one(len(graph), clique)
+
+
+def descending_degree_glutonous_heuristic_from_clique(
+    clique: np.ndarray, graph: np.ndarray, degrees: np.ndarray
+) -> None:
+    """
+    From a base clique attempt to build a bigger one by regarding the nodes not
+    yet in the clique by descending order.
+    Updates the base clique in place.
+    """
+    clique_size = np.sum(clique)
+    clique_nodes = [i for i in range(len(clique)) if clique[i] == 1]
+    # Take nodes not yet in the clique and order them by descending degree
+    candidates = [i for i in range(len(clique)) if clique[i] == 0]
+    ordered_candidates = order_subset_of_nodes_in_descending_order(
+        nodes=candidates, degrees=degrees
+    )
+
+    for candidate_node in ordered_candidates:
+        # If at some point the remaining degrees are less than the number
+        # of elements in the clique, no more node can be added, and since they
+        # are ordered once one node has a degree which is too small, all the
+        # next ones too
+        if degrees[candidate_node] < clique_size:
+            return
+        elif np.all(
+            [
+                check_if_edge_exists_in_adjacency(
+                    graph=graph, first_node=candidate_node, second_node=clique_node
+                )
+                for clique_node in clique_nodes
+            ]
+        ):
+            clique_nodes.append(candidate_node)
+            clique[candidate_node] = 1
+            clique_size += 1
+        else:
+            continue
+
+    return
 
 
 def update_residual_graph_and_reorder_nodes(
