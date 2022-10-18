@@ -54,3 +54,15 @@ Possibles heuristics:
 - Found interesting paper : https://www.researchgate.net/publication/341273157_Randomized_heuristic_for_the_maximum_clique_problem
 The idea of descending degrees seems to be valid and can be worked on.
 - On other instances, we see that, quite naturally, adding some randomness can yield better solutions, but of course not always.
+
+############################################
+#### 17/10
+############################################
+- worked on performance of random base heuristic
+
+############################################
+#### 18/10
+############################################
+- the problem we have here is that our neighbours will have either
+0 or 1 as a delta for the objective, which makes it hard to discriminate
+between them.
