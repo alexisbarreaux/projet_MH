@@ -1,0 +1,19 @@
+          instance  max_k  start_clique  end_clique  best_known  time of best
+0   brock200_2.col      2             7           9          12      0.163013
+1   brock200_2.col      3             7           9          12      0.023035
+2   brock200_2.col      4             7          10          12      0.019001
+3    dsjc125.1.col      2             4           4           4      0.000000
+4    dsjc125.1.col      3             4           4           4      0.000000
+5    dsjc125.1.col      4             4           4           4      0.000000
+6    random-10.col      2             5           5           5      0.000000
+7    random-10.col      3             5           5           5      0.000000
+8    random-10.col      4             5           5           5      0.000000
+9   random-100.col      2             8           9           9      0.315963
+10  random-100.col      3             8           9           9      3.564997
+11  random-100.col      4             8           9           9      1.390002
+12   random-40.col      2             7           7           7      0.000000
+13   random-40.col      3             7           7           7      0.000000
+14   random-40.col      4             7           7           7      0.000000
+15   random-70.col      2             7           8           8      0.041967
+16   random-70.col      3             7           8           8      0.051997
+17   random-70.col      4             7           8           8      0.040965
