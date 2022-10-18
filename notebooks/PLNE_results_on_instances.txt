@@ -1,0 +1,7 @@
+             file method  clique bound  total time
+0  brock200_2.col   PLNE            12   43.983442
+1   dsjc125.1.col   PLNE             4    1.326468
+2   random-10.col   PLNE             5    0.017977
+3  random-100.col   PLNE             9    0.722999
+4   random-40.col   PLNE             7    0.076000
+5   random-70.col   PLNE             8    0.296025

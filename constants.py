@@ -15,6 +15,15 @@ BASE_INSTANCES_FILES = [
     "random-40.col",
     "random-70.col",
 ]
+BASE_INSTANCES_BEST_KNOWN = {
+    "brock200_2.col": 12,
+    "dsjc125.1.col": 4,
+    "random-10.col": 5,
+    "random-100.col": 9,
+    "random-40.col": 7,
+    "random-70.col": 8,
+}
+
 OTHER_INSTANCES_FILES = [
     "brock800_4.txt",
     "C2000.5.txt",
