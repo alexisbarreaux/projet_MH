@@ -5,7 +5,7 @@ import numpy as np
 from time import time
 
 from utils import i_th_nodes_removal_neighbour
-from heuristics import descending_degree_glutonous_heuristic_from_clique
+from heuristics import descending_random_from_clique
 
 
 def base_vns_meta_heuristic(
@@ -34,29 +34,32 @@ def base_vns_meta_heuristic(
     while (time() - start_time) < max_time:
         neighbourhood_size = 1
         number_of_iterations += 1
-        print("Iteration", number_of_iterations)
         while neighbourhood_size < biggest_neighbourhood_size + 1:
             # Remove some nodes from the clique taken randomly
             nodes_to_delete = i_th_nodes_removal_neighbour(
                 best_clique, i=neighbourhood_size
             )
-            print(neighbourhood_size, nodes_to_delete)
             new_clique = np.copy(best_clique)
             for node in nodes_to_delete:
                 new_clique[node] = 0
 
             # Search new best clique greedily from there.
-            descending_degree_glutonous_heuristic_from_clique(
+            descending_random_from_clique(
                 clique=new_clique, graph=graph, degrees=degrees
             )
-            print(new_clique)
 
             # See if the new result is better
             new_size = np.sum(new_clique)
             if new_size > size_best_clique:
                 print("Elapsed time", time() - start_time)
-                print("Old", size_best_clique, best_clique)
-                print("New", new_size, new_clique)
+                print(
+                    "Old",
+                    size_best_clique,
+                    "New",
+                    new_size,
+                    "Iteration",
+                    number_of_iterations,
+                )
                 size_best_clique = new_size
                 best_clique = new_clique
                 neighbourhood_size = 1

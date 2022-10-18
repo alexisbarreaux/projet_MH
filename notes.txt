@@ -70,3 +70,7 @@ between them.
 - voisinage V_i(x) = retirer i noeuds de la clique x
 - base idea : remove nodes and add others back with biggest degrees first. -> doesn't work
 because we are always rebuilding the same clique.
+- Works with random candidate taken
+- To be done :
+     display base results and final one found with vns
+     display common nodes % with base solution
