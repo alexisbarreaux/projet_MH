@@ -29,21 +29,23 @@ def base_vns_meta_heuristic(
         - verbose : wether to print some informations during runtime or not.
     """
     # Setup
+    start_time = time()
     best_clique = starting_clique
     size_best_clique = np.sum(best_clique)
-    start_time = time()
     time_best_found = 0
     number_of_iterations = 0
     iteration_of_best = 0
 
+    # We can't take a neighbourhood bigger than all the nodes in the clique.
+    current_biggest_neighbourhood_size = min(
+        size_best_clique, biggest_neighbourhood_size
+    )
     while (time() - start_time) < max_time:
-        # We can't take a neighbourhood bigger than all the nodes in the clique.
-        current_biggest_neighbourhood_size = min(
-            np.sum(best_clique), biggest_neighbourhood_size
-        )
-
-        neighbourhood_size = 1
         number_of_iterations += 1
+
+        # Restart from first neighbourhood
+        neighbourhood_size = 1
+
         while neighbourhood_size < current_biggest_neighbourhood_size + 1:
             # Remove some nodes from the clique taken randomly
             nodes_to_delete = i_th_nodes_removal_neighbour(
@@ -52,12 +54,10 @@ def base_vns_meta_heuristic(
             new_clique = np.copy(best_clique)
             for node in nodes_to_delete:
                 new_clique[node] = 0
-
             # Search new best clique greedily from there.
             descending_random_from_clique(
                 clique=new_clique, graph=graph, degrees=degrees
             )
-
             # See if the new result is better
             new_size = np.sum(new_clique)
             if new_size > size_best_clique:

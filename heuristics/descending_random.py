@@ -27,13 +27,8 @@ def descending_random_from_clique(
         # A node can't be added if his degree is below clique size.
         if degrees[candidate_node] < clique_size:
             continue
-        elif np.all(
-            [
-                check_if_edge_exists_in_adjacency(
-                    graph=graph, first_node=candidate_node, second_node=clique_node
-                )
-                for clique_node in clique_nodes
-            ]
+        elif (
+            np.sum(np.take(graph[candidate_node], indices=clique_nodes)) == clique_size
         ):
             clique_nodes.append(candidate_node)
             clique[candidate_node] = 1
