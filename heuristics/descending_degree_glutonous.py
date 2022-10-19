@@ -159,6 +159,7 @@ def dynamic_descending_degree_glutonous_heuristic(
     ordered_nodes = order_nodes_in_descending_order(degrees=degrees)
     residual_graph = np.copy(graph)
     clique = []
+    clique_size = 0
 
     # Store wether nodes were already tested or not.
     treated_nodes = np.zeros(len(graph), dtype=bool)
@@ -171,17 +172,13 @@ def dynamic_descending_degree_glutonous_heuristic(
                 continue
             else:
                 treated_nodes[candidate_node] = True
-                if np.all(
-                    [
-                        check_if_edge_exists_in_adjacency(
-                            graph=graph,
-                            first_node=candidate_node,
-                            second_node=clique_node,
-                        )
-                        for clique_node in clique
-                    ]
+
+                if (
+                    np.sum(np.take(graph[candidate_node], indices=clique))
+                    == clique_size
                 ):
                     clique.append(candidate_node)
+                    clique_size += 1
                     degrees, ordered_nodes = update_residual_graph_and_reorder_nodes(
                         residual_graph=residual_graph, removed_node=candidate_node
                     )
