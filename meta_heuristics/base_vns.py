@@ -35,10 +35,11 @@ def base_vns_meta_heuristic(
     time_best_found = 0
     number_of_iterations = 0
     iteration_of_best = 0
-    # We can't take a neighbourhood bigger than all the nodes in the clique.
-    biggest_neighbourhood_size = min(np.sum(best_clique), biggest_neighbourhood_size)
-
+    
     while (time() - start_time) < max_time:
+        # We can't take a neighbourhood bigger than all the nodes in the clique.
+        biggest_neighbourhood_size = min(np.sum(best_clique), biggest_neighbourhood_size)
+
         neighbourhood_size = 1
         number_of_iterations += 1
         while neighbourhood_size < biggest_neighbourhood_size + 1:

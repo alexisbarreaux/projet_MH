@@ -74,3 +74,8 @@ because we are always rebuilding the same clique.
 - To be done :
      display base results and final one found with vns
      display common nodes % with base solution
+
+############################################
+#### 19/10
+############################################
+- using np random shuffle gains a lot of time in random function instead of for loop.

@@ -19,15 +19,12 @@ def descending_random_from_clique(
     """
     clique_size = np.sum(clique)
     clique_nodes = [i for i in range(len(clique)) if clique[i] == 1]
-    # Take nodes not yet in the clique and order them by descending degree
+    # Take nodes not yet in the clique as candidates and shuffle them
     candidates = [i for i in range(len(clique)) if clique[i] == 0]
-    starting_candidates_size = len(candidates)
+    np.random.shuffle(candidates)
 
-    for i in range(starting_candidates_size):
-        # Choose next node randomly
-        position_to_take = randint(0, starting_candidates_size - 1 - i)
-        candidate_node = candidates.pop(position_to_take)
-
+    for candidate_node in candidates:
+        # A node can't be added if his degree is below clique size.
         if degrees[candidate_node] < clique_size:
             continue
         elif np.all(
