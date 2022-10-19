@@ -85,3 +85,4 @@ helping to find a best solution
 add randomness here and maybe restart from the least seen nodes.
 - rewrote vns base as runner
 - seems like the one restarting from other positions is not so good.
+- enhanced definitively doesn't seem to help

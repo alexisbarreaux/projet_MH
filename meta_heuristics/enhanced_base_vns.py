@@ -18,6 +18,7 @@ def enhansed_base_vns_meta_heuristic(
     max_iterations_without_improvement: int = 10,
     max_time: int = 60,
     verbose: bool = False,
+    penalization: int = 1,
 ) -> Tuple[np.ndarray, float, int, int]:
     """
     Iteratively deletes random nodes from the clique and attempt to rebuild a better one from there.
@@ -59,7 +60,7 @@ def enhansed_base_vns_meta_heuristic(
         The new node to start from is taken with a probability higher if we have
         been blocked less times in it
         """
-        times_blocked_on_nodes = times_blocked_on_nodes + best_clique
+        times_blocked_on_nodes = times_blocked_on_nodes + penalization * best_clique
         # Cumsum the values and then inverse them to get probabilities intervals
         probabilities_intervals = np.cumsum(1 / times_blocked_on_nodes)
         # Take a random value between 0 and the max of the intervals
