@@ -40,7 +40,7 @@ def descending_degree_glutonous_heuristic(
         # next ones too
         if degrees[candidate_node] < clique_size:
             return transform_node_clique_to_zero_one(len(graph), clique)
-        elif np.sum(np.take(graph[candidate_node], indices=clique)) == len(clique):
+        elif np.sum(np.take(graph[candidate_node], indices=clique)) == clique_size:
             clique.append(candidate_node)
             clique_size += 1
         else:
