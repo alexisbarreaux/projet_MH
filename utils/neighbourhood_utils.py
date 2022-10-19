@@ -33,5 +33,5 @@ def i_th_nodes_removal_neighbour(array: np.ndarray, i: int) -> list:
     The result returned is not the arrays but the separate combinations of
     nodes one can remove.
     """
-    clique_nodes = [i for i in range(len(array)) if array[i] == 1]
+    clique_nodes = [j for j in range(len(array)) if array[j] == 1]
     return random.sample(clique_nodes, i)
