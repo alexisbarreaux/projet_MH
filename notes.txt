@@ -86,3 +86,14 @@ add randomness here and maybe restart from the least seen nodes.
 - rewrote vns base as runner
 - seems like the one restarting from other positions is not so good.
 - enhanced definitively doesn't seem to help
+- Enhancement of adding node to clique test.
+# Mean with adjacency comparison: Mean 0.024424775600433348
+# Mean with bit sum is less efficient : Mean 0.03597150468826294
+# Mean with np.take and sum is better: Mean 0.006640812635421753
+
+# Same on biggest graph for nodes : "C2000.5.txt"
+# Mean with adjacency comparison: Mean 0.05538655281066895
+# Mean with np.take and sum is better: Mean 0.017236299753189088
+# Mean with naive loove even with possibly getting out faster : Mean 0.8596100306510925
+
+# the factor 4 difference seems to stay true
