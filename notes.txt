@@ -83,3 +83,4 @@ because we are always rebuilding the same clique.
 helping to find a best solution
 - we converge quickly in a local optima from which we have difficulties to get out of. As such we need to 
 add randomness here and maybe restart from the least seen nodes.
+- rewrote vns base as runner
