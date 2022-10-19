@@ -35,14 +35,16 @@ def base_vns_meta_heuristic(
     time_best_found = 0
     number_of_iterations = 0
     iteration_of_best = 0
-    
+
     while (time() - start_time) < max_time:
         # We can't take a neighbourhood bigger than all the nodes in the clique.
-        biggest_neighbourhood_size = min(np.sum(best_clique), biggest_neighbourhood_size)
+        current_biggest_neighbourhood_size = min(
+            np.sum(best_clique), biggest_neighbourhood_size
+        )
 
         neighbourhood_size = 1
         number_of_iterations += 1
-        while neighbourhood_size < biggest_neighbourhood_size + 1:
+        while neighbourhood_size < current_biggest_neighbourhood_size + 1:
             # Remove some nodes from the clique taken randomly
             nodes_to_delete = i_th_nodes_removal_neighbour(
                 best_clique, i=neighbourhood_size
@@ -70,6 +72,8 @@ def base_vns_meta_heuristic(
                         new_size,
                         "Iteration",
                         number_of_iterations,
+                        "Neighbourhood size",
+                        neighbourhood_size,
                     )
                 size_best_clique = new_size
                 best_clique = new_clique
