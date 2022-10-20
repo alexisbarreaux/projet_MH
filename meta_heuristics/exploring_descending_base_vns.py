@@ -81,7 +81,7 @@ class ExploringMetaHeuristicRunner:
         self.current_clique = np.copy(self.best_clique)
         self.size_best_clique = np.sum(self.best_clique)
         self.time_best_found = 0
-        self.iteration_of_best = 0
+        self.iteration_best_clique = 0
         self.number_of_iterations = 0
         self.iterations_without_improve = 0
         return
@@ -115,7 +115,6 @@ class ExploringMetaHeuristicRunner:
 
         This is the intensification part.
         """
-        print("Found better solution, searching around it.")
         current_biggest_neighbourhood_size = (
             self.get_current_biggest_neighbourhood_size(self.size_best_clique)
         )
@@ -153,6 +152,8 @@ class ExploringMetaHeuristicRunner:
         # Search in neighbourhoods
         best_neighbour = None
         size_best_neighbour = 0
+        self.number_of_iterations += 1
+
         for neighbourhood_size in range(1, self.current_biggest_neighbourhood_size + 1):
             new_clique = np.copy(self.current_clique)
             # Remove some nodes from the clique taken randomly
@@ -205,7 +206,6 @@ class ExploringMetaHeuristicRunner:
         self.exploring_iterations_without_improve = 0
 
         while (time() - self.start_time) < self.max_time:
-            self.number_of_iterations += 1
             self.exploring_iterations_without_improve += 1
 
             # If exploration doesn't yield results, start again.
@@ -233,6 +233,6 @@ class ExploringMetaHeuristicRunner:
         return (
             self.best_clique,
             self.time_best_found,
-            self.iteration_of_best,
+            self.iteration_best_clique,
             self.number_of_iterations,
         )
