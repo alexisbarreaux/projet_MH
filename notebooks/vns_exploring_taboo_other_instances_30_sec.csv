@@ -1,0 +1,7 @@
+;instance;method;start;end;bound;gap;start/end diff;time of best;iteration_of_best;total_iterations
+0;brock800_4.txt;expl taboo;14;19;26;26.9%;2.9%;2.2090036869049072;50;675
+1;C2000.5.txt;expl taboo;10;14;16;12.5%;1.2%;28.769293069839478;239;250
+2;C500.9.txt;expl taboo;43;55;57;3.5%;9.2%;6.2739644050598145;193;958
+3;gen400_p0.9_75.txt;expl taboo;47;51;75;32.0%;9.0%;1.130037546157837;48;1292
+4;p_hat1500-3.txt;expl taboo;75;91;94;3.2%;3.9%;11.350173473358154;116;295
+5;p_hat700-1.txt;expl taboo;7;11;11;0.0%;2.6%;11.114994049072266;279;730

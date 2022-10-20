@@ -110,3 +110,6 @@ don't find an improvement
     exploring iterations.
 - exploring now takes the best neighbourh instead of going through the first
 one
+-  adding the possibility to take a solution of same value increases the chance to cycle
+ -> we need taboos
+ - taboos provide solution more different and even slightly better it seems !
