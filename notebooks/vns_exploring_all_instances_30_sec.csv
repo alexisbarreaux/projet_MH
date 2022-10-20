@@ -1,0 +1,13 @@
+;instance;method;start;end;bound;gap;start/end diff;time of best;iteration_of_best;total_iterations
+0;brock800_4.txt;exploring;14;18;26;30.8%;3.0%;23.974392414093018;160;213
+1;C2000.5.txt;exploring;10;14;16;12.5%;1.2%;11.70233416557312;26;61
+2;C500.9.txt;exploring;43;49;57;14.0%;9.6%;1.459972620010376;7;249
+3;gen400_p0.9_75.txt;exploring;47;51;75;32.0%;7.0%;7.431206226348877;89;371
+4;p_hat1500-3.txt;exploring;75;89;94;5.3%;3.1%;15.270846366882324;37;72
+5;p_hat700-1.txt;exploring;7;9;11;18.2%;1.7%;0.1374213695526123;1;199
+6;brock200_2.col;exploring;7;10;12;16.7%;3.5%;2.081233024597168;75;1535
+7;dsjc125.1.col;exploring;4;4;4;0.0%;0.0%;0.0;0;3457
+8;random-10.col;exploring;5;5;5;0.0%;0.0%;0.0;0;49562
+9;random-100.col;exploring;8;9;9;0.0%;9.0%;0.15129542350769043;11;2770
+10;random-40.col;exploring;7;7;7;0.0%;0.0%;0.0;0;10822
+11;random-70.col;exploring;7;8;8;0.0%;10.0%;0.06714582443237305;10;5983

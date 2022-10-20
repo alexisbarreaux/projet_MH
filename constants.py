@@ -40,3 +40,10 @@ OTHER_INSTANCES_BEST_KNOWN = {
     "p_hat700-1.txt": 11,
     "p_hat1500-3.txt": 94,
 }
+
+# Grouped variables
+ALL_INSTANCES_PATH_TUPLES = [
+    (instance, OTHER_INSTANCES_DIR / instance) for instance in OTHER_INSTANCES_FILES
+] + [(instance, BASE_INSTANCES_DIR / instance) for instance in BASE_INSTANCES_FILES]
+ALL_BEST_KNOWN = BASE_INSTANCES_BEST_KNOWN.copy()
+ALL_BEST_KNOWN.update(OTHER_INSTANCES_BEST_KNOWN)
