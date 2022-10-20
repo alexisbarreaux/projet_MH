@@ -108,3 +108,5 @@ don't find an improvement
 - exploration can yield better results as well as worse ones, need to improve
 - the best with exploration can be better but doesn't seem to be easily linked to the number of
     exploring iterations.
+- exploring now takes the best neighbourh instead of going through the first
+one
