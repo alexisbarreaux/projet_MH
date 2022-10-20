@@ -168,7 +168,10 @@ class ExploringMetaHeuristicRunner:
             )
             # See if the new result is better
             new_size = np.sum(new_clique)
-            if new_size > self.size_best_clique:
+            # In the exploration phase, being of same value than best is interesting
+            # since we have already searched around the current best, so a new one
+            # could yield better results.
+            if new_size >= self.size_best_clique:
                 self.update_best_solution(new_clique=new_clique, new_size=new_size)
                 if self.verbose:
                     self.print_new_solution()
@@ -184,10 +187,11 @@ class ExploringMetaHeuristicRunner:
                 size_best_neighbour = new_size
             else:
                 continue
-
-        # If we didn't break previously, it means we went through without finding a strictly better neighbour,
-        # thus take the best out of them
-        self.current_clique = best_neighbour
+        else:
+            # This code is to be run only if the loop ends without break.
+            # If we didn't break previously, it means we went through without finding a strictly better neighbour,
+            # thus take the best out of them
+            self.current_clique = best_neighbour
         return
 
     def exploring_base_vns_meta_heuristic(self) -> Tuple[np.ndarray, float, int, int]:
