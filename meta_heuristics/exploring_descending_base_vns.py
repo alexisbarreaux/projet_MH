@@ -35,8 +35,6 @@ class ExploringMetaHeuristicRunner:
     time_best_clique: float
     size_best_clique: int
     iteration_best_clique: int
-    # New evaluated solution
-    new_size: int = 0
     # Exploration variables
     exploring_iterations_without_improve: int
     max_best_iterations_without_improve: int
@@ -171,7 +169,7 @@ class ExploringMetaHeuristicRunner:
             # In the exploration phase, being of same value than best is interesting
             # since we have already searched around the current best, so a new one
             # could yield better results.
-            if new_size >= self.size_best_clique:
+            if new_size > self.size_best_clique:
                 self.update_best_solution(new_clique=new_clique, new_size=new_size)
                 if self.verbose:
                     self.print_new_solution()
