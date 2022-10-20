@@ -66,3 +66,47 @@ The idea of descending degrees seems to be valid and can be worked on.
 - the problem we have here is that our neighbours will have either
 0 or 1 as a delta for the objective, which makes it hard to discriminate
 between them.
+- première méta : faire un vns de base où on retire k noeuds de la clique et on refait une descente à partir de là.
+- voisinage V_i(x) = retirer i noeuds de la clique x
+- base idea : remove nodes and add others back with biggest degrees first. -> doesn't work
+because we are always rebuilding the same clique.
+- Works with random candidate taken
+- To be done :
+     display base results and final one found with vns
+     display common nodes % with base solution
+
+############################################
+#### 19/10
+############################################
+- using np random shuffle gains a lot of time in random function instead of for loop.
+- augmenting max neighbourhood size only seems to push the last best iteration further without actually 
+helping to find a best solution
+- we converge quickly in a local optima from which we have difficulties to get out of. As such we need to 
+add randomness here and maybe restart from the least seen nodes.
+- rewrote vns base as runner
+- seems like the one restarting from other positions is not so good.
+- enhanced definitively doesn't seem to help
+- Enhancement of adding node to clique test.
+# Mean with adjacency comparison: Mean 0.024424775600433348
+# Mean with bit sum is less efficient : Mean 0.03597150468826294
+# Mean with np.take and sum is better: Mean 0.006640812635421753
+
+# Same on biggest graph for nodes : "C2000.5.txt"
+# Mean with adjacency comparison: Mean 0.05538655281066895
+# Mean with np.take and sum is better: Mean 0.017236299753189088
+# Mean with naive loove even with possibly getting out faster : Mean 0.8596100306510925
+
+# the factor 4 difference seems to stay true
+
+
+############################################
+#### 20/10
+############################################
+- the issue of early convergence might come from the fact that without improvement we stay at best clique
+an idea might be to reverse this and instead keep a best, modify a current and regularly get back to best if we
+don't find an improvement
+- exploration can yield better results as well as worse ones, need to improve
+- the best with exploration can be better but doesn't seem to be easily linked to the number of
+    exploring iterations.
+- exploring now takes the best neighbourh instead of going through the first
+one
