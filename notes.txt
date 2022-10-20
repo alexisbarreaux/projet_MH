@@ -97,3 +97,12 @@ add randomness here and maybe restart from the least seen nodes.
 # Mean with naive loove even with possibly getting out faster : Mean 0.8596100306510925
 
 # the factor 4 difference seems to stay true
+
+
+############################################
+#### 20/10
+############################################
+- the issue of early convergence might come from the fact that without improvement we stay at best clique
+an idea might be to reverse this and instead keep a best, modify a current and regularly get back to best if we
+don't find an improvement
+- exploration can yield better results as well as worse ones, need to improve

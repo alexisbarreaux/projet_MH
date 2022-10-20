@@ -10,7 +10,7 @@ from utils import i_th_nodes_removal_neighbour
 from heuristics import descending_random_from_clique
 
 
-def enhansed_base_vns_meta_heuristic(
+def enhanced_base_vns_meta_heuristic(
     starting_clique: np.ndarray,
     graph: np.ndarray,
     degrees: np.ndarray,

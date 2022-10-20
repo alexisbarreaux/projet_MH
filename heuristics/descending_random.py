@@ -4,10 +4,6 @@ from random import randint
 
 import numpy as np
 
-from utils import (
-    check_if_edge_exists_in_adjacency,
-)
-
 
 def descending_random_from_clique(
     clique: np.ndarray, graph: np.ndarray, degrees: np.ndarray
