@@ -113,3 +113,9 @@ one
 -  adding the possibility to take a solution of same value increases the chance to cycle
  -> we need taboos
  - taboos provide solution more different and even slightly better it seems !
+ 
+ - biggest neighbourhood is kept fixed at size 5
+ - max_best_iterations_without_improve is taken so that the probability
+ of having not removed a node from the clique for V_1 of the first clique
+ found with the heuristic is less than 1/2
+ Seems less effective -> to be benchmarked.

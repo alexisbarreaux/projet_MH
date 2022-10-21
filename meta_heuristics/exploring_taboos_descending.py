@@ -22,7 +22,7 @@ class ExploringTaboosMetaHeuristicRunner:
     graph: np.ndarray
     degrees: np.ndarray
     starting_clique: np.ndarray
-    biggest_neighbourhood_size: int
+    biggest_neighbourhood_exploration: int
     verbose: bool
     max_time: int
     # Runtime variables
@@ -36,9 +36,11 @@ class ExploringTaboosMetaHeuristicRunner:
     time_best_clique: float
     size_best_clique: int
     iteration_best_clique: int
+    # Intensification variables
+    biggest_neighbourhood_intensification: int
     # Exploration variables
     exploring_iterations_without_improve: int
-    max_best_iterations_without_improve: int
+    max_intensification_without_improve: int
     max_exploring_iterations_without_improve: int
     # Taboos variables
     taboos_list: np.ndarray
@@ -51,10 +53,11 @@ class ExploringTaboosMetaHeuristicRunner:
         graph: np.ndarray,
         degrees: np.ndarray,
         starting_clique: np.ndarray,
-        biggest_neighbourhood_size: int = 5,
+        biggest_neighbourhood_exploration: int = 5,
+        biggest_neighbourhood_intensification: int = 3,
         max_time: int = 60,
         verbose: bool = False,
-        max_best_iterations_without_improve: int = 5,
+        max_intensification_without_improve: int = 5,
         max_exploring_iterations_without_improve: int = 10,
         max_taboos: int = 10,
     ) -> None:
@@ -63,19 +66,22 @@ class ExploringTaboosMetaHeuristicRunner:
             - graph : the graph in which we are working
             - degrees : the degrees in our graph
             - starting_clique : the given starting solution
-            - biggest_neighbourhood_size: the max i for V_i our neighbourhood
+            - biggest_neighbourhood_exploration: the max i for V_i our neighbourhood
             - max_time : max_time to run the heuristic in seconds.
             - verbose : wether to print some informations during runtime or not.
-            - max_best_iterations_without_improve: used for local descent on best.
+            - max_intensification_without_improve: used for local descent on best.
             - max_exploring_iterations_without_improve: used for local descent on current.
         """
         self.graph = graph
         self.degrees = degrees
         self.starting_clique = starting_clique
-        self.biggest_neighbourhood_size = biggest_neighbourhood_size
+        self.biggest_neighbourhood_exploration = biggest_neighbourhood_exploration
+        self.biggest_neighbourhood_intensification = (
+            biggest_neighbourhood_intensification
+        )
         self.max_time = max_time
         self.verbose = verbose
-        self.max_best_iterations_without_improve = max_best_iterations_without_improve
+        self.max_intensification_without_improve = max_intensification_without_improve
         self.max_exploring_iterations_without_improve = (
             max_exploring_iterations_without_improve
         )
@@ -94,9 +100,6 @@ class ExploringTaboosMetaHeuristicRunner:
         self.taboos_queue = Queue()
         self.taboos_queue_size = 0
         return
-
-    def get_current_biggest_neighbourhood_size(self, size_of_clique: int) -> int:
-        return min(size_of_clique - 1, self.biggest_neighbourhood_size)
 
     def update_best_solution(self, new_clique: np.ndarray, new_size: int) -> None:
         self.time_best_found = time() - self.start_time
@@ -133,14 +136,15 @@ class ExploringTaboosMetaHeuristicRunner:
 
     def search_locally_from_best_clique(self) -> None:
         """
-        Local descent from current best clique for at most max_best_iterations_without_improve.
+        Local descent from current best clique for at most max_intensification_without_improve.
 
         This is the intensification part.
+        By default we stay between V_1 and V_3 of our best current solution.
         """
-        current_biggest_neighbourhood_size = (
-            self.get_current_biggest_neighbourhood_size(self.size_best_clique)
+        current_biggest_neighbourhood_size = min(
+            self.size_best_clique - 1, self.biggest_neighbourhood_intensification
         )
-        for _ in range(self.max_best_iterations_without_improve):
+        for _ in range(self.max_intensification_without_improve):
             self.number_of_iterations += 1
 
             # Check several neighbourhoods
@@ -179,8 +183,12 @@ class ExploringTaboosMetaHeuristicRunner:
         best_neighbour = None
         size_best_neighbour = 0
         self.number_of_iterations += 1
+        # Set biggest neighboourhood for current
+        current_biggest_neighbourhood = min(
+            self.size_best_clique - 1, self.biggest_neighbourhood_exploration
+        )
 
-        for neighbourhood_size in range(1, self.current_biggest_neighbourhood_size + 1):
+        for neighbourhood_size in range(1, current_biggest_neighbourhood + 1):
             new_clique = np.copy(self.current_clique)
             # Remove some nodes from the clique taken randomly
             nodes_to_delete = i_th_nodes_removal_neighbour(
@@ -254,17 +262,8 @@ class ExploringTaboosMetaHeuristicRunner:
             ):
                 self.current_clique = np.copy(self.best_clique)
                 self.exploring_iterations_without_improve = 0
-                self.current_biggest_neighbourhood_size = (
-                    self.get_current_biggest_neighbourhood_size(
-                        size_of_clique=self.size_best_clique
-                    )
-                )
             else:
-                self.current_biggest_neighbourhood_size = (
-                    self.get_current_biggest_neighbourhood_size(
-                        size_of_clique=np.sum(self.current_clique)
-                    )
-                )
+                pass
 
             # Exploring part
             self.explore_from_current_clique()
