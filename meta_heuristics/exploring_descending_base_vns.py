@@ -50,6 +50,7 @@ class ExploringMetaHeuristicRunner:
         verbose: bool = False,
         max_best_iterations_without_improve: int = 5,
         max_exploring_iterations_without_improve: int = 10,
+        **kwargs,
     ) -> None:
         """
         Arguments:

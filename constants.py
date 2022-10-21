@@ -46,13 +46,13 @@ OTHER_INSTANCES_BEST_KNOWN = {
     "gen400_p0.9_75.txt": 75,
     "p_hat700-1.txt": 11,
     "p_hat1500-3.txt": 94,
-    "dsjc1000.1.col": "//",
-    "dsjc1000.5.col": "//",
-    "dsjc1000.9.col": "//",
-    "dsjc250.5.col": "//",
-    "dsjc500.1.col": "//",
-    "dsjc500.5.col": "//",
-    "dsjc500.9.col": "//",
+    "dsjc1000.1.col": 5,
+    "dsjc1000.5.col": 14,
+    "dsjc1000.9.col": 57,
+    "dsjc250.5.col": 11,
+    "dsjc500.1.col": 5,
+    "dsjc500.5.col": 12,
+    "dsjc500.9.col": 51,
 }
 
 # Grouped variables

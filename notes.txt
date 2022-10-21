@@ -119,3 +119,12 @@ one
  of having not removed a node from the clique for V_1 of the first clique
  found with the heuristic is less than 1/2
  Seems less effective -> to be benchmarked.
+
+############################################
+#### 21/10
+############################################
+- Parameter seems indeed less efficient
+- in the same way, finding the good size of the taboo list seems hard
+- adding random restart when having to much difficulties.
+- other bound idea : order the nodes, from 1 to n if deg[node[i]] < i then we can't have a bigger clique.
+

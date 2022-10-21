@@ -1,13 +1,14 @@
 from time import time
 from typing import Tuple
 from queue import Queue
+from random import randint
 
 import numpy as np
 from heuristics import descending_random_from_clique_with_taboos
 from utils import i_th_nodes_removal_neighbour
 
 
-class ExploringTaboosMetaHeuristicRunner:
+class ExploringTaboosRestartMetaHeuristicRunner:
     """
      The idea is to start from a given clique and:
     - for a given set of iterations attempt to find a better neighbour
@@ -16,6 +17,7 @@ class ExploringTaboosMetaHeuristicRunner:
     - for another given set of iterations, explore further from the best know
         - if a better one is found move from there
         - else restart from best known
+    - If after some restarts we still don't get anything better, restart from a random node.
     """
 
     # Initialization variables
@@ -40,8 +42,10 @@ class ExploringTaboosMetaHeuristicRunner:
     biggest_neighbourhood_intensification: int
     # Exploration variables
     exploring_iterations_without_improve: int
+    restarts_iterations_without_improve: int
     max_intensification_without_improve: int
     max_exploring_iterations_without_improve: int
+    max_restarts_iterations_without_improve: int
     # Taboos variables
     taboos_list: np.ndarray
     taboos_queue: Queue
@@ -59,8 +63,9 @@ class ExploringTaboosMetaHeuristicRunner:
         verbose: bool = False,
         max_intensification_without_improve: int = 5,
         max_exploring_iterations_without_improve: int = 10,
+        max_restarts_iterations_without_improve: int = 2,
         max_taboos: int = 10,
-        **kwargs
+        **kwargs,
     ) -> None:
         """
         Arguments:
@@ -86,6 +91,9 @@ class ExploringTaboosMetaHeuristicRunner:
         self.max_exploring_iterations_without_improve = (
             max_exploring_iterations_without_improve
         )
+        self.max_restarts_iterations_without_improve = (
+            max_restarts_iterations_without_improve
+        )
         self.max_taboos = max_taboos
 
     def reset_runtime_variables(self) -> None:
@@ -96,7 +104,8 @@ class ExploringTaboosMetaHeuristicRunner:
         self.time_best_found = 0
         self.iteration_best_clique = 0
         self.number_of_iterations = 0
-        self.iterations_without_improve = 0
+        self.exploring_iterations_without_improve = 0
+        self.restarts_iterations_without_improve = 0
         self.taboos_list = np.zeros(len(self.graph), dtype=bool)
         self.taboos_queue = Queue()
         self.taboos_queue_size = 0
@@ -238,7 +247,7 @@ class ExploringTaboosMetaHeuristicRunner:
             self.current_clique = best_neighbour
         return
 
-    def exploring_base_vns_meta_heuristic(self) -> Tuple[np.ndarray, float, int, int]:
+    def meta_heuristic(self) -> Tuple[np.ndarray, float, int, int]:
         """
         When finding a new best clique, try to explore from it for some iterations. If a new best is find restart
         this process.
@@ -251,8 +260,6 @@ class ExploringTaboosMetaHeuristicRunner:
         self.search_locally_from_best_clique()
         self.current_clique = np.copy(self.best_clique)
 
-        self.exploring_iterations_without_improve = 0
-
         while (time() - self.start_time) < self.max_time:
             self.exploring_iterations_without_improve += 1
 
@@ -261,8 +268,26 @@ class ExploringTaboosMetaHeuristicRunner:
                 self.exploring_iterations_without_improve
                 > self.max_exploring_iterations_without_improve
             ):
-                self.current_clique = np.copy(self.best_clique)
+
                 self.exploring_iterations_without_improve = 0
+                self.restarts_iterations_without_improve += 1
+                # If too many restart from best were made, restart from random.
+                if (
+                    self.restarts_iterations_without_improve
+                    > self.max_restarts_iterations_without_improve
+                ):
+                    self.current_clique = np.zeros(len(self.graph))
+                    # Set a random node to 1, then descend from it
+                    self.current_clique[randint(len(self.graph) - 1)] = 1
+                    descending_random_from_clique_with_taboos(
+                        clique=self.current_clique,
+                        graph=self.graph,
+                        degrees=self.degrees,
+                        taboos_list=self.taboos_list,
+                    )
+                # Otherwise restart from best
+                else:
+                    self.current_clique = np.copy(self.best_clique)
             else:
                 pass
 
