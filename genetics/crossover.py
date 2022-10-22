@@ -58,13 +58,9 @@ def genetic_with_crossover(graph: np.ndarray, degrees: np.ndarray, alpha: float)
 
         # {Update}
         if children:
-            print("yay")
             population = sorted(
                 np.concatenate((population, children)), key=itemgetter(0)
             )[-mu:]
-        # {TESTS}
-        print(statistics.mean(list(zip(*population))[0]))
-        # print(max(population, key=itemgetter(0))[0])
 
     best = max(population, key=itemgetter(0))
     clique = np.zeros(n)
