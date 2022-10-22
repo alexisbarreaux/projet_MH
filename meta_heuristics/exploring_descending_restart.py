@@ -276,9 +276,11 @@ class ExploringTaboosRestartMetaHeuristicRunner:
                     self.restarts_iterations_without_improve
                     > self.max_restarts_iterations_without_improve
                 ):
-                    self.current_clique = np.zeros(len(self.graph))
+                    self.current_clique = np.zeros(
+                        len(self.graph), dtype=np.int64
+                    )  # Need int for sum to be int
                     # Set a random node to 1, then descend from it
-                    self.current_clique[randint(len(self.graph) - 1)] = 1
+                    self.current_clique[randint(0, len(self.graph) - 1)] = 1
                     descending_random_from_clique_with_taboos(
                         clique=self.current_clique,
                         graph=self.graph,

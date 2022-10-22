@@ -193,7 +193,7 @@ class ExploringMetaHeuristicRunner:
             self.current_clique = best_neighbour
         return
 
-    def exploring_base_vns_meta_heuristic(self) -> Tuple[np.ndarray, float, int, int]:
+    def meta_heuristic(self) -> Tuple[np.ndarray, float, int, int]:
         """
         When finding a new best clique, try to explore from it for some iterations. If a new best is find restart
         this process.
