@@ -41,7 +41,7 @@ class HeuristicRunner:
         self.display_time_details = display_time_details
 
         # Initialize display dataframe
-        columns = ["instance", "method", "found", "best", "time"]
+        columns = ["instance", "method", "found", "bound", "time"]
         if display_time_details:
             columns += ["load(s)", "clique(s)"]
 
