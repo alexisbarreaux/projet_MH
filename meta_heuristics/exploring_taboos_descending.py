@@ -188,6 +188,22 @@ class ExploringTaboosMetaHeuristicRunner:
         current_biggest_neighbourhood = min(
             np.sum(self.current_clique) - 1, self.biggest_neighbourhood_exploration
         )
+        # If at some point we end up in a clique with a single node, we ought to first make a
+        # descent from there with no taboos, otherwise we may be trapped here.
+        if current_biggest_neighbourhood == 0:
+            descending_random_from_clique_with_taboos(
+                clique=self.current_clique,
+                graph=self.graph,
+                degrees=self.degrees,
+                taboos_list=np.zeros(len(self.graph), dtype=bool),
+            )
+            # If the current clique is still a lonely node, get back to best clique
+            if np.sum(self.current_clique) == 1:
+                self.current_clique = self.best_clique
+            # Update biggest neighbourhood
+            current_biggest_neighbourhood = min(
+                np.sum(self.current_clique) - 1, self.biggest_neighbourhood_exploration
+            )
 
         for neighbourhood_size in range(1, current_biggest_neighbourhood + 1):
             new_clique = np.copy(self.current_clique)
