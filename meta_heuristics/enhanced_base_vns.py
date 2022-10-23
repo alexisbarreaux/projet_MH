@@ -1,5 +1,3 @@
-# The idea is to start from a given clique and randomly remvoe nodes and attempt to rebuild
-# a clique from there.
 from typing import Tuple
 
 import numpy as np
