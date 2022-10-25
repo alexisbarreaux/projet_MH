@@ -2,6 +2,7 @@ from time import time
 from typing import Tuple
 from queue import Queue
 from random import randint
+import os
 
 import numpy as np
 from heuristics import descending_random_from_clique_with_taboos
@@ -27,6 +28,9 @@ class ExploringTaboosRestartMetaHeuristicRunner:
     biggest_neighbourhood_exploration: int
     verbose: bool
     max_time: int
+    # Result storing variables
+    store_cliques: bool
+    storing_file: str
     # Runtime variables
     start_time: float
     number_of_iterations: int
@@ -116,10 +120,39 @@ class ExploringTaboosRestartMetaHeuristicRunner:
         self.size_best_clique = new_size
         self.best_clique = new_clique
         self.iteration_best_clique = self.number_of_iterations
+
+        # We only store when strictly better:
+        if self.store_cliques:
+            self.store_best_clique()
         return
 
     def update_clique_only(self, new_clique: np.ndarray) -> None:
         self.best_clique = new_clique
+        return
+
+    def update_store_variables(
+        self, store_cliques: bool = False, storing_file: str = None
+    ) -> None:
+        self.store_cliques = store_cliques
+        if storing_file is None:
+            storing_file = "./restart_results.txt"
+
+        # Remove storing file if it already exists
+        try:
+            os.remove(storing_file)
+        except OSError:
+            pass
+        self.storing_file = storing_file
+        # Start by storing starting clique
+        self.store_clique(clique=self.starting_clique)
+
+        return
+
+    def store_clique(self, clique: np.ndarray = None) -> None:
+        if clique is None:
+            clique = self.best_clique
+        with open(self.storing_file, "a") as result_file:
+            result_file.write(f"{clique}\n\n")
         return
 
     def print_new_solution(self) -> None:
