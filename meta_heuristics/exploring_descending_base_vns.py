@@ -26,7 +26,7 @@ class ExploringMetaHeuristicRunner:
     max_time: int
     verbose: bool
     # Result storing variables
-    store_cliques: bool
+    store_cliques: bool = False
     storing_file: str
     # Runtime variables
     start_time: float

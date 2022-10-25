@@ -29,7 +29,7 @@ class ExploringTaboosRestartMetaHeuristicRunner:
     verbose: bool
     max_time: int
     # Result storing variables
-    store_cliques: bool
+    store_cliques: bool = False
     storing_file: str
     # Runtime variables
     start_time: float
