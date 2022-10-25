@@ -1,6 +1,7 @@
 from time import time
 from typing import Tuple
 from queue import Queue
+import os
 
 import numpy as np
 from heuristics import descending_random_from_clique_with_taboos
@@ -25,6 +26,9 @@ class ExploringTaboosMetaHeuristicRunner:
     biggest_neighbourhood_exploration: int
     verbose: bool
     max_time: int
+    # Result storing variables
+    store_cliques: bool = False
+    storing_file: str
     # Runtime variables
     start_time: float
     number_of_iterations: int
@@ -60,7 +64,7 @@ class ExploringTaboosMetaHeuristicRunner:
         max_intensification_without_improve: int = 5,
         max_exploring_iterations_without_improve: int = 10,
         max_taboos: int = 10,
-        **kwargs
+        **kwargs,
     ) -> None:
         """
         Arguments:
@@ -107,10 +111,40 @@ class ExploringTaboosMetaHeuristicRunner:
         self.size_best_clique = new_size
         self.best_clique = new_clique
         self.iteration_best_clique = self.number_of_iterations
+
+        # We only store when strictly better:
+        if self.store_cliques:
+            self.store_clique()
         return
 
     def update_clique_only(self, new_clique: np.ndarray) -> None:
         self.best_clique = new_clique
+        return
+
+    def update_store_variables(
+        self, store_cliques: bool = False, storing_file: str = None
+    ) -> None:
+        self.store_cliques = store_cliques
+        if storing_file is None:
+            storing_file = "./taboos_results.txt"
+
+        # Remove storing file if it already exists
+        try:
+            os.remove(storing_file)
+        except OSError:
+            pass
+        self.storing_file = storing_file
+
+        # Start by storing starting clique
+        self.store_clique(clique=self.starting_clique)
+
+        return
+
+    def store_clique(self, clique: np.ndarray = None) -> None:
+        if clique is None:
+            clique = self.best_clique
+        with open(self.storing_file, "a") as result_file:
+            result_file.write(f"{clique}\n\n")
         return
 
     def print_new_solution(self) -> None:
@@ -188,6 +222,22 @@ class ExploringTaboosMetaHeuristicRunner:
         current_biggest_neighbourhood = min(
             np.sum(self.current_clique) - 1, self.biggest_neighbourhood_exploration
         )
+        # If at some point we end up in a clique with a single node, we ought to first make a
+        # descent from there with no taboos, otherwise we may be trapped here.
+        if current_biggest_neighbourhood == 0:
+            descending_random_from_clique_with_taboos(
+                clique=self.current_clique,
+                graph=self.graph,
+                degrees=self.degrees,
+                taboos_list=np.zeros(len(self.graph), dtype=bool),
+            )
+            # If the current clique is still a lonely node, get back to best clique
+            if np.sum(self.current_clique) == 1:
+                self.current_clique = self.best_clique
+            # Update biggest neighbourhood
+            current_biggest_neighbourhood = min(
+                np.sum(self.current_clique) - 1, self.biggest_neighbourhood_exploration
+            )
 
         for neighbourhood_size in range(1, current_biggest_neighbourhood + 1):
             new_clique = np.copy(self.current_clique)

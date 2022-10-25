@@ -41,7 +41,7 @@ class HeuristicRunner:
         self.display_time_details = display_time_details
 
         # Initialize display dataframe
-        columns = ["instance", "method", "clique", "best", "total(s)"]
+        columns = ["instance", "method", "found", "bound", "time"]
         if display_time_details:
             columns += ["load(s)", "clique(s)"]
 
@@ -79,11 +79,6 @@ class HeuristicRunner:
                 new_row += [instance_reading_time, clique_creating_time]
 
             self.display_dataframe.loc[len(self.display_dataframe)] = new_row
-
-        # At the end of file, add separator line
-        self.display_dataframe.loc[len(self.display_dataframe)] = ["///"] * len(
-            self.display_dataframe.columns
-        )
         return
 
     def run_all_methods_on_all_instances(self) -> None:
