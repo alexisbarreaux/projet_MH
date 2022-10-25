@@ -5,7 +5,6 @@ from linearProg.PL import LP
 def bound_degrees(degrees: np.ndarray):
     freq = np.bincount(degrees)
     deg = len(freq) - 1
-    stop = False
     somme = 0
     while deg > 0:
         somme += freq[deg]
