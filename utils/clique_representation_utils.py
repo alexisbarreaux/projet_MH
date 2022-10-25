@@ -14,3 +14,11 @@ def transform_zero_one_clique_to_nodes(clique: np.ndarray) -> list:
         if clique[i] == 1:
             clique_nodes.append(i)
     return clique_nodes
+
+
+def transform_zero_one_clique_to_nodes_of_base(clique: np.ndarray) -> list:
+    clique_nodes = []
+    for i in range(len(clique)):
+        if clique[i] == 1:
+            clique_nodes.append(i + 1)
+    return clique_nodes
